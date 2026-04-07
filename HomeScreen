@@ -1,0 +1,656 @@
+Screens:
+  HomeScreen:
+    Properties:
+      LoadingSpinnerColor: =RGBA(56, 96, 178, 1)
+    Children:
+      - Header_1:
+          Control: CanvasComponent
+          ComponentName: Header
+          Properties:
+            Height: =76
+            Width: =1366
+      - Gallery1:
+          Control: Gallery@2.15.0
+          Variant: BrowseLayout_Vertical_OneTextVariant_ver4.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Height: =487
+            Items: |+
+              =FirstN(
+                  SortByColumns(
+                      Filter(
+                          ClaimList,
+                          IsBlank(opCoFilter.Selected.Value) || IsEmpty(opCoFilter.SelectedItems) || opCo.Value = opCoFilter.Selected.Value,
+                          IsBlank(statusFilter.Selected.Value) || IsEmpty(statusFilter.SelectedItems) || Status.Value = statusFilter.Selected.Value,
+                          IsBlank(typeFilter.Selected.Value) || IsEmpty(typeFilter.SelectedItems) || 
+                              Switch(
+                                  typeFilter.Selected.Value,
+                                  "CN(Finish Good)", typeRequest.Value = "Sales Return",
+                                  "Claim(Damage)", typeRequest.Value = "Claim"
+                              ),
+                          DateCreatedN >= dpForm.SelectedDate && DateCreatedN <= dpTo.SelectedDate,
+                          If(
+                              !IsBlank(ComboBox1.Selected),
+                              Title in ComboBox1.SelectedItems,
+                              StartsWith(Title, ComboBox1.SearchText)
+                          )
+                      ),
+                      "ID",
+                      If(SortDescending1, SortOrder.Ascending, SortOrder.Descending)
+                  ),
+                  1000
+              )
+
+
+            TemplateSize: =51
+            Width: =1366
+            Y: =242
+          Children:
+            - Title2:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =25
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Text: =ThisItem.requestNumber
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =100
+                  X: =11
+                  Y: =13
+            - Separator2:
+                Control: Rectangle@2.3.0
+                Properties:
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Fill: =RGBA(0, 18, 107, 1)
+                  Height: =0
+                  OnSelect: =Select(Parent)
+                  Width: =Parent.TemplateWidth
+                  Y: =Parent.TemplateHeight - 1
+            - Title2_1:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Text: =Text(DateTimeValue(ThisItem.DateCreatedN),"dd/mm/yyyy")
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =106
+                  X: =120
+                  Y: =13
+            - Title2_2:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =27
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =3
+                  Size: =11
+                  Text: |-
+                    =If( ThisItem.opCo.Value = "STH",
+                        If(ThisItem.claimType.Value = "Invoice \ ลดหนี้" , "Claim/Invoice",
+                       ThisItem.claimType.Value = "Waiting \ รอของ" , "Claim/Waiting", "CN(Finish Good)"),
+                       ThisItem.typeRequest.Value = "Claim","Claim(Damage)","CN(Finish Good)"
+                       )
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =115
+                  X: =289
+                  Y: =12
+            - Title2_3:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  Overflow: =Overflow.Scroll
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Text: =ThisItem.'Created By'.DisplayName
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =229
+                  X: =409
+                  Y: =12
+            - Title2_4:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  Overflow: =Overflow.Scroll
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =12
+                  Text: =ThisItem.Title
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =219
+                  X: =647
+                  Y: =13
+            - Title2_5:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =12
+                  Text: =ThisItem.invoiceNumber
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =137
+                  X: =866
+                  Y: =12
+            - Title2_6:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  Overflow: =Overflow.Scroll
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =12
+                  Text: =ThisItem.Status.Value
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =156
+                  X: =1005
+                  Y: =12
+            - Title2_7:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Text: =ThisItem.opCo.Value
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =37
+                  X: =237
+                  Y: =13
+            - Title2_8:
+                Control: Label@2.5.1
+                Properties:
+                  BorderColor: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =26
+                  OnSelect: =Select(Parent)
+                  Overflow: =Overflow.Scroll
+                  PaddingBottom: =0
+                  PaddingLeft: =0
+                  PaddingRight: =0
+                  PaddingTop: =0
+                  Size: =12
+                  Text: =If(Title2_6.Text = "Completed" || Title2_6.Text = "Customer Rejected" ,"",ThisItem.waitPerson)
+                  VerticalAlign: =VerticalAlign.Top
+                  Width: =156
+                  X: =1161
+                  Y: =12
+            - NextArrow2:
+                Control: Classic/Icon@2.5.0
+                Properties:
+                  AccessibleLabel: =Self.Tooltip
+                  BorderColor: =RGBA(0, 18, 107, 1)
+                  Color: =RGBA(0, 18, 107, 1)
+                  Height: =38
+                  Icon: =Icon.ChevronRight
+                  OnSelect: |-
+                    =Set(varItem,Blank());
+                    Set(varItem,ThisItem);
+
+                    If( ThisItem.Status.Value = "Customer Rejected" || 
+                        ThisItem.Status.Value = "Approver Rejected"||
+                        ThisItem.Status.Value = "Technical Onsite Rejected"||
+                        ThisItem.Status.Value = "Purchasing Rejected"||
+                        ((ThisItem.Status.Value = "Checker Rejected" ||ThisItem.Status.Value = "Contactor Rejected"||ThisItem.Status.Value = "Warehouse Product Rejected") && ThisItem.rejectReasonClaim.Value = "Detail Wrong"),
+                    Navigate(ResubmitScreen),
+                    If(ThisItem.typeRequest.Value = "Claim",Navigate(ViewScreen),
+
+                    If(ThisItem.opCo.Value = "STH",Navigate(ReturnViewScreen),Navigate(ReturnSonViewScreen))));
+
+                    ClearCollect(RandomIDs,Left(Concat(Shuffle(varPasswordCharacters),Value),12));
+                  PaddingBottom: =2
+                  PaddingLeft: =2
+                  PaddingRight: =2
+                  PaddingTop: =2
+                  TabIndex: =0
+                  Tooltip: ="View item details"
+                  Width: =40
+                  X: =1320
+                  Y: =7
+      - Button2:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: |-
+              =Navigate(NewScreen);NewForm(Form1);
+              ClearCollect(RandomIDs,Left(Concat(Shuffle(varPasswordCharacters),Value),12));
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Text: ="New Request"
+            X: =1189
+            Y: =18
+      - Label5:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            BorderThickness: =2
+            Color: =RGBA(118, 0, 0, 1)
+            Fill: =RGBA(253, 222, 207, 1)
+            Font: =Font.Lato
+            FontWeight: =FontWeight.Semibold
+            Height: =62
+            Italic: =true
+            PaddingRight: =2.37
+            PaddingTop: =2.37
+            Size: =28.46
+            Text: ="  Request All Items"
+            Width: =1366.00
+            Y: =135
+      - Label2_1:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =2
+            Fill: =RGBA(253, 222, 207, 1)
+            Font: =Font.Lato
+            FontWeight: =FontWeight.Bold
+            Height: =45
+            Italic: =true
+            PaddingRight: =2.37
+            PaddingTop: =2.37
+            Size: =14
+            Text: =" Request No.    Date Created     Opco            Type              Created By                                          Customer Name                           Invoice Number            Status                                  Waiting"
+            Width: =1366.00
+            Y: =197
+      - Label1_4:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(176, 79, 255, 1)
+            Font: =Font.Lato
+            Height: =39
+            PaddingRight: =2.37
+            PaddingTop: =2.37
+            Size: =20
+            Text: |+
+              =/*
+              CountRows(Filter(ClaimList,
+                      If(!IsBlank(ComboBox1.Selected),
+                      Title in ComboBox1.SelectedItems,StartsWith(Title,ComboBox1.SearchText)),
+                      IsBlank(typeFilter.Selected.Value)||IsEmpty(typeFilter.SelectedItems)|| Switch(
+                              typeFilter.Selected.Value,
+                              "CN(Finish Good)",
+                                  typeRequest.Value = "Sales Return",
+                              "Claim(Damage)",
+                                  typeRequest.Value = "Claim" 
+                      ),
+                      DateCreatedN >= dpForm.SelectedDate && DateCreatedN <= dpTo.SelectedDate
+                   )) & " Row(s) Found "
+              */
+              If(CountRows(Gallery1.AllItems) >= 2000,"2000+",
+              CountRows(Gallery1.AllItems)) & " Row(s) Found "
+            Width: =1366
+            Y: =729
+      - dpForm:
+          Control: Classic/DatePicker@2.6.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            DefaultDate: =DateTimeValue("01/01/2021 12:00:00 AM")
+            Font: =Font.'Open Sans'
+            Height: =36
+            IconBackground: =RGBA(56, 96, 178, 1)
+            IconFill: =RGBA(255, 255, 255, 1)
+            OnSelect: =
+            Reset: =clearFilterButton.Pressed
+            Width: =136
+            X: =600
+            Y: =84
+      - clearFilterButton:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =ColorFade(Self.Fill, -15%)
+            Color: =RGBA(255, 255, 255, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            Fill: =RGBA(56, 96, 178, 1)
+            Font: =Font.'Open Sans'
+            Height: =36
+            HoverBorderColor: =ColorFade(Self.BorderColor, 20%)
+            HoverColor: =RGBA(255, 255, 255, 1)
+            HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            OnSelect: |-
+              =ClearCollect(ClaimList,claimRequest);
+              Reset(ComboBox2);
+              Reset(ComboBox2_2);
+              Reset(opCoFilter);
+              Reset(statusFilter);
+            PressedBorderColor: =Self.Fill
+            PressedColor: =Self.Fill
+            PressedFill: =Self.Color
+            Size: =12
+            Text: ="Clear Filter"
+            Width: =112
+            X: =1237
+            Y: =84
+      - dpTo:
+          Control: Classic/DatePicker@2.6.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: =36
+            IconBackground: =RGBA(56, 96, 178, 1)
+            IconFill: =RGBA(255, 255, 255, 1)
+            OnSelect: =If(dpTo.SelectedDate < dpForm.SelectedDate,Notify("Please Select Correct Date Filter",NotificationType.Error) ,dpForm.SelectedDate)
+            Reset: =clearFilterButton.Pressed
+            Width: =154
+            X: =782
+            Y: =84
+      - Label10_1:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: =34
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: ="To"
+            Width: =50
+            X: =738
+            Y: =84
+      - Label10_2:
+          Control: Label@2.5.1
+          Properties:
+            Align: =Align.Center
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: =34
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: ="From"
+            Width: =50
+            X: =547
+            Y: =84
+      - ComboBox1:
+          Control: Classic/ComboBox@2.4.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            DisplayFields: =["Value"]
+            Font: =Font.'Open Sans'
+            Height: =36
+            HoverFill: =RGBA(186, 202, 226, 1)
+            InputTextPlaceholder: ="Customer Name"
+            Items: |+
+              =
+              Distinct(
+                  FirstN(
+                      SortByColumns(claimRequest, "ID",SortOrder.Descending),
+                      1000
+                  ),
+                  Title
+              )
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            Reset: =clearFilterButton.Pressed
+            SearchFields: =["Value"]
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =264
+            X: =955
+            Y: =84
+      - IconRefresh1:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            AccessibleLabel: =Self.Tooltip
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =80
+            Icon: =Icon.Reload
+            OnSelect: |-
+              =Refresh(claimRequest);
+              ClearCollect(ClaimList, Sort(claimRequest, ID,SortOrder.Descending));
+              ClearCollect(ClaimListFilter, Sort(claimRequest, ID,SortOrder.Descending));
+            PaddingBottom: =22
+            PaddingLeft: =22
+            PaddingRight: =22
+            PaddingTop: =22
+            PressedFill: =RGBA(255, 255, 255, 0.3)
+            TabIndex: =0
+            Tooltip: ="Refresh list"
+            Width: =88
+            X: =1101
+      - IconSortUpDown1:
+          Control: Classic/Icon@2.5.0
+          Properties:
+            AccessibleLabel: =Self.Tooltip
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =37
+            Icon: =Icon.Sort
+            OnSelect: |-
+              =UpdateContext({SortDescending1: !SortDescending1})
+            PressedFill: =RGBA(255, 255, 255, 0.3)
+            TabIndex: =0
+            Tooltip: =If(SortDescending1, "Sort list in reverse alphabetical order", "Sort list in alphabetical order")
+            Width: =40
+            X: =1065
+            Y: =21
+      - ComboBox2:
+          Control: Classic/ComboBox@2.4.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            DisplayFields: =["Value"]
+            Font: =Font.'Open Sans'
+            Height: =36
+            HoverFill: =RGBA(186, 202, 226, 1)
+            InputTextPlaceholder: ="Created By Name"
+            Items: |+
+              =Distinct(
+                  FirstN(Gallery1.AllItems, 1000),
+                  'Created By'.DisplayName
+              )
+            NoSelectionText: ="Created By Name"
+            OnChange: "=If(IsBlank(ComboBox2.Selected),ClearCollect(ClaimList,claimRequest),\r\nClearCollect(ClaimList,Filter(\r\n    ClaimListFilter, 'Created By'.DisplayName in ComboBox2.SelectedItems))\r\n)\r\n\r\n     "
+            OnSelect: =
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SearchFields: =["Value"]
+            SelectMultiple: =false
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =284
+            X: =254
+            Y: =84
+      - ComboBox2_2:
+          Control: Classic/ComboBox@2.4.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            DisplayFields: =["Value"]
+            Font: =Font.'Open Sans'
+            Height: =36
+            HoverFill: =RGBA(186, 202, 226, 1)
+            InputTextPlaceholder: ="Request No."
+            Items: |+
+              =Distinct(
+                  FirstN(Gallery1.AllItems, 1000),
+                  requestNumber
+              )
+            NoSelectionText: ="Request No."
+            OnChange: "=If(IsBlank(ComboBox2_2.Selected),ClearCollect(ClaimList,claimRequest),\r\nClearCollect(ClaimList,Filter(\r\n    ClaimListFilter, requestNumber in ComboBox2_2.SelectedItems))\r\n)\r\n\r\n\r\n\r\n     "
+            OnSelect: =
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SearchFields: =["Value"]
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =198
+            X: =18
+            Y: =84
+      - opCoFilter:
+          Control: Classic/ComboBox@2.4.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            DisplayFields: =["Value"]
+            Font: =Font.'Open Sans'
+            HoverFill: =RGBA(186, 202, 226, 1)
+            InputTextPlaceholder: ="Opco"
+            IsSearchable: =false
+            Items: =Choices(claimRequest.opCo)
+            NoSelectionText: ="Opco"
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SearchFields: =["Value"]
+            SelectMultiple: =false
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =89
+            X: =955
+            Y: =19
+      - statusFilter:
+          Control: Classic/ComboBox@2.4.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            DisplayFields: =["Value"]
+            Font: =Font.'Open Sans'
+            Height: =36
+            HoverFill: =RGBA(186, 202, 226, 1)
+            InputTextPlaceholder: ="Status"
+            IsSearchable: =false
+            Items: =Choices(claimRequest.Status)
+            NoSelectionText: ="Status"
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SearchFields: =["Value"]
+            SelectMultiple: =false
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =218
+            X: =1131
+            Y: =148
+      - Image5:
+          Control: Image@2.2.3
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Height: =84
+            Image: ='Sonepar logo RGB_Tagline'
+            Width: =140
+      - Label10:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(255, 255, 255, 1)
+            Font: =Font.'Open Sans'
+            Size: =10
+            Text: |-
+              ="Version : 1.6.500"
+            Width: =129
+            X: =1237
+            Y: =728
+      - opCoUser:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Font: =Font.'Open Sans'
+            Height: =41
+            Text: |-
+              =If(Office365Users.MyProfile().CompanyName = "Sonepar (Thailand) Limited","STH","SON")
+              //"SON"
+            Visible: =false
+            Width: =111
+            X: =770
+            Y: =143
+      - typeFilter:
+          Control: Classic/ComboBox@2.4.0
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            ChevronBackground: =RGBA(56, 96, 178, 1)
+            ChevronFill: =RGBA(255, 255, 255, 1)
+            ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+            ChevronHoverFill: =RGBA(255, 255, 255, 1)
+            DisplayFields: =["Value"]
+            Font: =Font.'Open Sans'
+            Height: =36
+            HoverFill: =RGBA(186, 202, 226, 1)
+            InputTextPlaceholder: ="Type"
+            IsSearchable: =false
+            Items: =["CN(Finish Good)","Claim(Damage)"]
+            NoSelectionText: ="Type"
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =RGBA(0, 18, 107, 1)
+            SearchFields: =["Value"]
+            SelectMultiple: =false
+            SelectionColor: =RGBA(255, 255, 255, 1)
+            SelectionFill: =RGBA(56, 96, 178, 1)
+            Width: =218
+            X: =890
+            Y: =148
